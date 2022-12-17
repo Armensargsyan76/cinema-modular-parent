@@ -137,8 +137,8 @@
                             <li>Running time:<span> </span><span th:text="${film.durationMinute}"></span></li>
                             <li>Country:<span> </span><a href="#" th:text="${film.country}"></a></li>
                             <li><span>Actor: </span>  <span th:each="actor:${film.actors}">
-                                <a href="#" th:text="${actor.name + ' ' + actor.surname}"></a></span></li>
-                            <li>Director:<span> </span><a href="#" th:text="${film.director.name + ' ' + film.director.surname}"></a></li>
+                                <a href="#" th:text="${actor.name}"></a></span></li>
+                            <li>Director:<span> </span><a href="#" th:text="${film.director.name}"></a></li>
 
                         </ul>
 
@@ -151,19 +151,22 @@
             <!-- end content -->
 
             <!-- player -->
+
             <div >
-                <form action="" th:if="${user != null}">
+                <a th:href="@{/drop/rating(film_id=${film.id})}"  th:if="${user != null and haveRating != null}"> <i class="fa-sharp fa-solid fa-trash"> remove  or</i>  <i class="fa-solid fa-pen-to-square"> change user  rating</i></a>
+                <form action="/send/rating" th:if="${user != null and haveRating == null}" >
+                    <input type="hidden" name="film_id" th:value="${film.id}">
                     <div class="rate">
                         <input type="radio" id="star10" name="rate" value="10"/>
-                        <label for="star5" title="text">5 stars</label>
+                        <label for="star10" title="text">5 stars</label>
                         <input type="radio" id="star9" name="rate" value="9"/>
-                        <label for="star4" title="text">4 stars</label>
+                        <label for="star9" title="text">4 stars</label>
                         <input type="radio" id="star8" name="rate" value="8"/>
-                        <label for="star3" title="text">3 stars</label>
+                        <label for="star8" title="text">3 stars</label>
                         <input type="radio" id="star7" name="rate" value="7"/>
-                        <label for="star2" title="text">2 stars</label>
+                        <label for="star7" title="text">2 stars</label>
                         <input type="radio" id="star6" name="rate" value="6"/>
-                        <label for="star1" title="text">1 star</label>
+                        <label for="star6" title="text">1 star</label>
                         <input type="radio" id="star5" name="rate" value="5"/>
                         <label for="star5" title="text">5 stars</label>
                         <input type="radio" id="star4" name="rate" value="4"/>
@@ -173,7 +176,7 @@
                         <input type="radio" id="star2" name="rate" value="2"/>
                         <label for="star2" title="text">2 stars</label>
                         <input type="radio" id="star1" name="rate" value="1"/>
-                        <label for="star1" title="text">1 star</label>
+                        <label  for="star1" title="text">1 star</label>
                     </div>
                     <div>
                         <input type="submit" class="filter__btn" value="rate the movie" style="margin-bottom: 5px">
@@ -183,14 +186,14 @@
 
                 </div>
                 <div th:if="${user != null}">
-                    <a href="#" >
-                        <i id="inactive" class="fa-regular fa-heart"></i>
+                    <a href="#" th:if="${haveFavoriteFilm != null}" th:href="@{/delete/favorite/film(film_id=${film.id})}">
+                        <i class="fa-solid fa-heart-circle-xmark"></i>
                     </a>
-                    <a href="#">
+                    <a th:if="${haveFavoriteFilm == null}" th:href="@{/favorite/movies(film_id=${film.id})}">
                         <i id="heart" class="fa-regular fa-heart"></i>
+
                     </a>
                 </div>
-
 
             </div>
 
@@ -293,7 +296,6 @@
 
                                                 <span class="comments__name"
                                                       th:text="${comment.user.name + ' ' + comment.user.surname}"></span>
-                                                <span class="comments__time">02.08.2018, 15:24</span>
                                             </div>
                                             <p class="comments__text" th:text="${comment.text}"></p>
                                         </li>

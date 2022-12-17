@@ -1,0 +1,218 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="VSahakyan">
+        <sql>
+            create table if not exists actor
+            (
+                id          int auto_increment
+                primary key,
+                age         int          not null,
+                biography   varchar(255) null,
+                country     varchar(255) null,
+                born        date         null,
+                died        date         null,
+                name        varchar(255) null,
+                picture_url varchar(255) null,
+                surname     varchar(255) null
+                );
+        </sql>
+        <sql>
+            create table if not exists actor_film
+            (
+                film_id  int not null,
+                actor_id int not null,
+                constraint FK3nf2jjwluwx6klglcul22gc25
+                foreign key (actor_id) references cinema.actor (id)
+                on update cascade on delete cascade,
+                constraint FK80gycmnpxqtiaf3m3duaobefw
+                foreign key (film_id) references cinema.film (id)
+                on update cascade on delete cascade
+                );
+        </sql>
+        <sql>
+            create table if not exists box_office
+            (
+                id             int auto_increment
+                primary key,
+                age_limit      varchar(255) null,
+                duration_min   int          not null,
+                price          double       not null,
+                seating_number int          not null,
+                time           date         null,
+                cinema_id      int          null,
+                film_id        int          null,
+                user_id        int          null,
+                constraint FK91kfqfsvnq2j1hibcgwuw6ay4
+                foreign key (film_id) references cinema.film (id),
+                constraint FKj3yvhndrpipovqw9teuustlj6
+                foreign key (user_id) references cinema.user (id),
+                constraint FKs8ut072o7eob6w75ur7uxwbvw
+                foreign key (cinema_id) references cinema.cinema (id)
+                );
+        </sql>
+        <sql>
+            create table if not exists cinema
+            (
+                id           int auto_increment
+                primary key,
+                address      varchar(255) null,
+                email        varchar(255) null,
+                name         varchar(255) null,
+                phone_number varchar(255) null,
+                picture_url  varchar(255) null,
+                spaciousness int          not null
+                );
+        </sql>
+        <sql>
+            create table if not exists comment
+            (
+                id      int auto_increment
+                primary key,
+                text    varchar(255) null,
+                film_id int          null,
+                user_id int          null,
+                constraint FK8kcum44fvpupyw6f5baccx25c
+                foreign key (user_id) references cinema.user (id),
+                constraint FKb6gnv47yxa2jewd4jpvm3pnfk
+                foreign key (film_id) references cinema.film (id)
+                );
+        </sql>
+        <sql>
+            create table if not exists director
+            (
+                id          int auto_increment
+                primary key,
+                age         int          not null,
+                biography   varchar(255) null,
+                country     varchar(255) null,
+                born        date         null,
+                died        date         null,
+                name        varchar(255) null,
+                picture_url varchar(255) null,
+                surname     varchar(255) null
+                );
+
+        </sql>
+        <sql>
+            create table if not exists director_films
+            (
+                director_id int not null,
+                films_id    int not null,
+                constraint UK_7bj9qfilvl7ckrc1tj7ewpfas
+                unique (films_id),
+                constraint FK940mqlky98tg7psbkg3rmb8g9
+                foreign key (films_id) references cinema.film (id)
+                on update cascade on delete cascade,
+                constraint FKakr8uc7abnmjfww9o2fkvqese
+                foreign key (director_id) references cinema.director (id)
+                on update cascade on delete cascade
+                );
+        </sql>
+        <sql>
+            create table if not exists favorite_movies
+            (
+                id      int auto_increment
+                primary key,
+                user_id int not null,
+                film_id int not null,
+                constraint favorite_movies_film_null_fk
+                foreign key (film_id) references cinema.film (id),
+                constraint favorite_movies_user_null_fk
+                foreign key (user_id) references cinema.user (id)
+                );
+        </sql>
+        <sql>
+            create table if not exists film
+            (
+                id              int auto_increment
+                primary key,
+                age_limit       varchar(255)                 null,
+                country         varchar(255)                 null,
+                description     varchar(255)                 null,
+                duration_minute int                          null,
+                original_title  varchar(255)                 null,
+                picture_url     varchar(255)                 null,
+                premiere        date                         null,
+                rating          double                       null,
+                status          enum ('ONLINE', 'IN_CINEMA') null,
+                video_url       varchar(255)                 null,
+                director_id     int                          null,
+                constraint FK4pqpakiyka8wwbiicmc0rgtwi
+                foreign key (director_id) references cinema.director (id)
+                on update cascade on delete cascade
+                );
+        </sql>
+        <sql>
+            create table if not exists film_genre
+            (
+                film_id  int not null,
+                genre_id int not null,
+                constraint FKd4b34b812xlb3nxh9b9m021dk
+                foreign key (genre_id) references cinema.genre (id)
+                on update cascade on delete cascade,
+                constraint FKe3a6pfgbc4cglfjg7216egpig
+                foreign key (film_id) references cinema.film (id)
+                on update cascade on delete cascade
+                );
+        </sql>
+        <sql>
+            create table if not exists genre
+            (
+                id   int auto_increment
+                primary key,
+                name varchar(255) null
+                );
+        </sql>
+        <sql>
+            create table if not exists genre_films
+            (
+                genre_id int not null,
+                films_id int not null,
+                constraint FK3mwhs2y7fhstfpgv1bxjnfqlt
+                foreign key (films_id) references cinema.film (id)
+                on update cascade on delete cascade,
+                constraint FKanv4we9tlr7uuhwg3243gt8am
+                foreign key (genre_id) references cinema.genre (id)
+                on update cascade on delete cascade
+                );
+        </sql>
+        <sql>
+            create table if not exists user
+            (
+                id              int auto_increment
+                primary key,
+                email           varchar(255) null,
+                is_enable       bit          not null,
+                name            varchar(255) null,
+                password        varchar(255) null,
+                picture_url     varchar(255) null,
+                role            varchar(255) null,
+                surname         varchar(255) null,
+                token           varchar(255) null,
+                registered_date date         null
+                );
+
+        </sql>
+        <sql>
+            create table if not exists user_film
+            (
+                id          int auto_increment
+                primary key,
+                user_id     int not null,
+                film_id     int not null,
+                user_rating int not null,
+                constraint user_filmm_film_null_fk
+                foreign key (film_id) references cinema.film (id),
+                constraint user_filmm_user_null_fk
+                foreign key (user_id) references cinema.user (id)
+                );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
