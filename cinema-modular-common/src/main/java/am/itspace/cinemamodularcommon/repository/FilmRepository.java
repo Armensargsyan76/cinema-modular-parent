@@ -15,7 +15,7 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
 
     Page<Film> findAllByGenres(Genre genre, Pageable pageable);
 
-
+    List<Film> findAllByGenres(Genre genre);
 
     @Query(value = "select * from film where (YEAR(premiere)) between :minDate  and :maxDate",nativeQuery = true)
     List<Film> findAllByPremiere_Year(int minDate, int maxDate);

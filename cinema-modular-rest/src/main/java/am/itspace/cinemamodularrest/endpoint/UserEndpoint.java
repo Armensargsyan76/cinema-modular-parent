@@ -1,4 +1,4 @@
-package am.itspace.cinemamodularrest.controller;
+package am.itspace.cinemamodularrest.endpoint;
 
 import am.itspace.cinemamodularcommon.dto.UserAuthDto;
 import am.itspace.cinemamodularcommon.dto.UserAuthResponseDto;
@@ -29,7 +29,9 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class UserController {
+@RequestMapping("/users")
+public class UserEndpoint {
+
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final UserMapper userMapper;
@@ -37,8 +39,7 @@ public class UserController {
     private final CommentService commentService;
     private final CreatePictureUtil createPictureUtil;
 
-
-    @PostMapping( "/users")
+    @PostMapping
     public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO userRequestDTO, @RequestPart(value = "imageUser",required = false) MultipartFile multipartFile) {
         Optional<User> existingUser = userService.findByEmail(userRequestDTO.getEmail());
         if (existingUser.isPresent()) {
@@ -47,7 +48,7 @@ public class UserController {
         return new ResponseEntity<>(userService.registerUser(userRequestDTO,multipartFile),HttpStatus.CREATED);
     }
 
-    @PostMapping("/users/auth")
+    @PostMapping("/auth")
     public ResponseEntity<?> auth(@RequestBody UserAuthDto userAuthDto) {
         Optional<User> byEmail = userService.findByEmail(userAuthDto.getEmail());
         if (byEmail.isPresent()) {
@@ -62,7 +63,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @GetMapping("/user/comments")
+    @GetMapping("/comments")
     public ResponseEntity<List<Comment>> userComments(@AuthenticationPrincipal CurrentUser currentUser) {
         var commentByUserId = commentService.getCommentByUserId(currentUser.getUser().getId());
         if (!commentByUserId.isEmpty()) {
@@ -71,18 +72,16 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/users")
+    @PutMapping
     ResponseEntity<UserResponseDTO> updateUser(@AuthenticationPrincipal CurrentUser currentUser, @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
         UserResponseDTO updateUser = userService.update(currentUser.getUser().getId(), userUpdateRequestDTO);
         if (updateUser.getId() == 0) {
             return ResponseEntity.badRequest().build();
         }
-
         return ResponseEntity.ok(updateUser);
     }
 
-
-    @DeleteMapping("/user/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable("id") int id) {
         if (userService.existUserById(id)) {
             userService.deleteUserById(id);
@@ -90,7 +89,8 @@ public class UserController {
         }
     return ResponseEntity.notFound().build();
     }
-    @GetMapping("/getImage")
+
+    @GetMapping(value = "/getImage", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getImage(@RequestParam("picName") String fileName) {
         if (createPictureUtil.getImage(fileName) == null){
             return null;
