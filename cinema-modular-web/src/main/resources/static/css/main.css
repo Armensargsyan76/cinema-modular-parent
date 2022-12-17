@@ -4115,15 +4115,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .rate:not(:checked) > label:before {
   content: '★ ';
 }
-#inactive {
-  color:white;
-}
-#inactive:hover {
-  color:red;
-}
-#heart{
-  color:red;
-}
+
 
 .rate > input:checked ~ label {
   color: #ffc700;

@@ -4,10 +4,14 @@ package am.itspace.cinemamodularweb.service;
 import am.itspace.cinemamodularcommon.dto.filmrequestdto.FilmRequestDTO;
 import am.itspace.cinemamodularcommon.entity.cinemadetail.TimeSince;
 import am.itspace.cinemamodularcommon.entity.filmdetail.*;
+import am.itspace.cinemamodularcommon.entity.userdetail.FavoriteMovies;
 import am.itspace.cinemamodularcommon.entity.userdetail.User;
+import am.itspace.cinemamodularcommon.entity.userdetail.UserFilm;
 import am.itspace.cinemamodularcommon.mapper.filmrequestmapper.FilmRequestMapper;
 import am.itspace.cinemamodularcommon.repository.CommentRepository;
+import am.itspace.cinemamodularcommon.repository.FavoriteMoviesRepository;
 import am.itspace.cinemamodularcommon.repository.FilmRepository;
+import am.itspace.cinemamodularcommon.repository.UserFilmRepository;
 import am.itspace.cinemamodularweb.util.CreatePictureUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +33,12 @@ public class FilmService {
     private final ActorService actorService;
     private final DirectorService directorService;
     private final CreatePictureUtil createPictureUtil;
-    private final FilmRequestMapper filmMapper;
     private final GenreService genreService;
     private final CommentRepository commentRepository;
     private final FilmRequestMapper filmRequestMapper;
     private final TimeSinceService timeSinceService;
+    private final UserFilmRepository userFilmRepository;
+    private final FavoriteMoviesRepository favoriteMoviesRepository;
 
     public void addFilm(FilmRequestDTO filmRequestDTO, MultipartFile multipartFile) {
         Film film = filmRequestMapper.map(filmRequestDTO);
@@ -49,6 +54,40 @@ public class FilmService {
         film.getDirector().getFilms().add(film);
         filmRepository.save(film);
         log.info("film added {}", film.getOriginalTitle());
+    }
+
+    public void starsRating(int rate, User user, int film_id) {
+        Optional<Film> filmOptional = filmRepository.findById(film_id);
+        UserFilm userFilm = UserFilm.builder()
+                .rating(rate)
+                .user(user)
+                .film(filmOptional.get())
+                .build();
+        userFilmRepository.save(userFilm);
+    }
+
+    public FavoriteMovies getFavoriteFilm(int film_id, int user_id) {
+        Optional<FavoriteMovies> favoriteMoviesOptional = favoriteMoviesRepository.findByFilm_idAndUser_id(film_id, user_id);
+        if (favoriteMoviesOptional.isEmpty()) {
+            return null;
+        }
+        return favoriteMoviesOptional.get();
+    }
+
+    public void deleteFavoriteFilmById(int id) {
+        favoriteMoviesRepository.deleteById(id);
+    }
+
+    public UserFilm getUserFilmByFilmIdAndUserId(int film_id, int user_id) {
+        Optional<UserFilm> userFilmOptional = userFilmRepository.findAllByFilm_idAndUser_id(film_id, user_id);
+        if (userFilmOptional.isEmpty()) {
+            return null;
+        }
+        return userFilmOptional.get();
+    }
+
+    public void dropRating(int id) {
+        userFilmRepository.deleteById(id);
     }
 
     public List<Film> getFiveFilmsByRating() {
@@ -124,6 +163,15 @@ public class FilmService {
 
     public Page<Film> getFilmByGenre(Genre genre, Pageable pageable) {
         return filmRepository.findAllByGenres(genre, pageable);
+    }
+
+    public void saveFavoriteMovies(int film_id, User user) {
+        Film film = getFilmById(film_id);
+        FavoriteMovies saveFilm = FavoriteMovies.builder()
+                .film(film)
+                .user(user)
+                .build();
+        favoriteMoviesRepository.save(saveFilm);
     }
 
     public List<Film> getFilmByPremiere(int minDate, int maxDate) {
