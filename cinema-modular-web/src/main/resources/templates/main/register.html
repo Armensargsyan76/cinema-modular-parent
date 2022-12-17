@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+<!--	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/bootstrap-reboot.min.css">
+	<link rel="stylesheet" href="/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
+	<link rel="stylesheet" href="/css/nouislider.min.css">
+	<link rel="stylesheet" href="/css/plyr.css">
+	<link rel="stylesheet" href="/css/photoswipe.css">
+	<link rel="stylesheet" href="/css/default-skin.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<!-- Favicons -->
+	<link rel="icon" type="image/png" href="/icon/favicon-32x32.png" sizes="32x32">
+	<link rel="apple-touch-icon" href="/icon/favicon-32x32.png">
+
+	<meta name="description" content="Online Movies, TV Shows & Cinema HTML Template">
+	<meta name="keywords" content="">
+	<meta name="author" content="Dmitry Volkov">
+	<title>FlixGo – Online Movies, TV Shows & Cinema HTML Template</title>
+
+</head>
+<body class="body">
+
+<div class="sign section--bg" data-bg="/img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="sign__content">
+                    <!-- registration form -->
+                    <form action="/register/user" class="sign__form" method="post" enctype="multipart/form-data">
+                        <a href="/home" class="sign__logo">
+                            <img src="/img/logo.svg" alt="">
+                        </a>
+                        <div class="sign__group">
+                            <input type="text" class="sign__input" name="name" placeholder="Name">
+                            <span style="color: #CCCCCC" th:if="errorMessagename != null" th:text="${errorMessagename}"/>
+                        </div>
+
+                        <div class="sign__group">
+                            <input type="text" class="sign__input" name="surname" placeholder="surname">
+                            <span style="color: #CCCCCC" th:if="errorMessagesurname != null"
+                                  th:text="${errorMessagesurname}"/>
+                        </div>
+
+
+                        <div class="sign__group">
+                            <input type="file" id="img_file" accept="image/*" name="imageUser" style="display:none">
+                            <label for="img_file" class="sign__input">
+                                <i class="fa-solid fa-image"> upload a photo</i>
+                            </label>
+                            <span style="color: #CCCCCC" th:if="errorMessageFile != null"
+                                  th:text="${errorMessageFile}"></span>
+                        </div>
+
+
+                        <div class="sign__group">
+
+                            <input type="email" class="sign__input" name="email" placeholder="Email">
+                            <span style="color: #CCCCCC" th:if="errorMessageEmail != null"th:text="${errorMessageEmail}"/>
+                        </div>
+
+                        <div class="sign__group">
+                            <input type="password" class="sign__input" name="password" placeholder="Password">
+                            <span style="color: #CCCCCC" th:if="errorMessagepassword != null"
+                                  th:text="${errorMessagepassword}"/>
+                        </div>
+
+						<div class="sign__group sign__group--checkbox">
+							<input id="remember" name="remember" type="checkbox" checked="checked">
+							<label for="remember">I agree to the Privacy Policy</label>
+						</div>
+						
+						<input class="sign__btn" type="submit" >Sign up</input>
+
+						<span class="sign__text">Already have an account? <a href="/user/login">Sign in!</a></span>
+					</form>
+					<!-- registration form -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JS -->
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.mousewheel.min.js"></script>
+<script src="/js/jquery.mCustomScrollbar.min.js"></script>
+<script src="/js/wNumb.js"></script>
+<script src="/js/nouislider.min.js"></script>
+<script src="/js/plyr.min.js"></script>
+<script src="/js/jquery.morelines.min.js"></script>
+<script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
