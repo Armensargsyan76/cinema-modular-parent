@@ -30,7 +30,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, MultipartFile multipartFile) {
         User user = userMapper.map(userRequestDTO);
         if (!multipartFile.isEmpty() && multipartFile.getSize() > 0) {
@@ -46,11 +45,6 @@ public class UserService {
         return userMapper.map(save);
     }
 
-    public boolean checkUniqueEmail(User user) {
-        Optional<User> byEmail = userRepository.findByEmail(user.getEmail());
-        return byEmail.isPresent();
-    }
-
     public UserResponseDTO update(int id, UserUpdateRequestDTO userUpdateRequestDTO) {
         User user = userMapper.map(userUpdateRequestDTO);
         if (userUpdateRequestDTO.getPassword() != null) {
@@ -60,44 +54,14 @@ public class UserService {
         user.setEnable(true);
         user.setId(id);
       return   userMapper.map(userRepository.save(user));
-
-
     }
-
-
-    public int getCountAllUsers() {
-        return userRepository.countAllUsers();
-    }
-
-    public List<User> getLastFiveUsers() {
-        if (userRepository.findLastFiveUsers().isEmpty()) {
-            return null;
-        }
-        return userRepository.findLastFiveUsers();
-    }
-
-    public Page<User> getAllUsers(Pageable pageable) {
-        if (userRepository.findAll(pageable).isEmpty()) {
-            return null;
-        }
-        return userRepository.findAll(pageable);
-    }
-
 
     public boolean existUserById(int id) {
       return userRepository.existsById(id);
-
     }
-
 
     public Optional<User> findByEmail(String email) {
-
         return userRepository.findByEmail(email);
-    }
-
-    public User save(User user) {
-
-        return userRepository.save(user);
     }
 
     public void deleteUserById(int id){
