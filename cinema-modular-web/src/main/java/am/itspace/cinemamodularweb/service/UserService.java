@@ -40,7 +40,6 @@ public class UserService {
         if (!multipartFile.isEmpty() && multipartFile.getSize() > 0) {
             user.setPictureUrl(creatPicture.creatPicture(multipartFile));
         }
-
         userRepository.save(userBuild(user));
         sendEmail(user);
         log.info("user registered {}", user.getEmail());

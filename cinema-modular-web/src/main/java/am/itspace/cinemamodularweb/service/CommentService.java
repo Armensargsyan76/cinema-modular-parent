@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -16,4 +15,9 @@ public class CommentService {
     public List<Comment> getCommentByUserId(int id) {
         return commentRepository.findAllByUserId(id);
     }
+
+    public List<Comment> getFilmComments(int filmId) {
+        return commentRepository.findAllByFilmId(filmId);
+    }
+
 }

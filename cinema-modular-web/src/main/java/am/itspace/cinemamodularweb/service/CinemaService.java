@@ -65,7 +65,7 @@ public class CinemaService {
     private List<Film> allFilmsById(List<Integer> filmsIds) {
         var films = new ArrayList<Film>();
         filmsIds.stream().filter(filmId -> filmId != 0).
-                forEach(f -> films.add(filmService.getById(f)));
+                forEach(f -> films.add(filmService.getFilmById(f)));
         return films;
     }
 

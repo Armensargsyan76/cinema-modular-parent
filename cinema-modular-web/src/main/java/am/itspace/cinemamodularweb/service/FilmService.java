@@ -130,28 +130,20 @@ public class FilmService {
         return false;
     }
 
-    public List<Film> getLastFilms() {
-        return filmRepository.findAll();
+    public List<Film> getLastFiveFilms() {
+        return filmRepository.findFiveLastFilms();
     }
 
-    public Film getFilmById(int film_id) {
-        return filmRepository.findById(film_id).orElse(null);
-    }
-
-    public List<Comment> getFilmComments(int film_id) {
-        return commentRepository.findAllByFilm_id(film_id);
+    public Film getFilmById(int filmId) {
+        return filmRepository.findById(filmId).orElse(null);
     }
 
     public List<Film> getOnlyCinemaFilms() {
         return filmRepository.findOnlyCinemaFilms();
     }
 
-    public Film getById(int id) {
-        return filmRepository.findById(id).orElse(null);
-    }
-
-    public Film saveComment(String text, User user, int film_id) {
-        Optional<Film> filmOptional = filmRepository.findById(film_id);
+    public Film saveComment(String text, User user, int filmId) {
+        Optional<Film> filmOptional = filmRepository.findById(filmId);
         Comment comment = Comment.builder()
                 .film(filmOptional.get())
                 .user(user)
@@ -175,7 +167,7 @@ public class FilmService {
     }
 
     public List<Film> getFilmByPremiere(int minDate, int maxDate) {
-        return filmRepository.findAllByPremiere_Year(minDate, maxDate);
+        return filmRepository.findAllByPremiereYear(minDate, maxDate);
     }
 
     public List<Film> getByRating() {
