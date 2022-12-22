@@ -1,8 +1,8 @@
 package am.itspace.cinemamodularweb.unit.service;
 
-import am.itspace.cinemamodularcommon.entity.filmdetail.Actor;
-import am.itspace.cinemamodularcommon.repository.ActorRepository;
-import am.itspace.cinemamodularweb.service.ActorService;
+import am.itspace.cinemamodularcommon.entity.filmdetail.Director;
+import am.itspace.cinemamodularcommon.repository.DirectorRepository;
+import am.itspace.cinemamodularweb.service.DirectorService;
 import am.itspace.cinemamodularweb.util.CreatePictureUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,18 +22,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ActorServiceTest {
+class DirectorServiceTest {
 
     @Mock
-    private ActorRepository actorRepository;
+    private DirectorRepository directorRepository;
     @Mock
     private CreatePictureUtil createPictureUtil;
     @Mock
     private MultipartFile multipartFile;
     @InjectMocks
-    private ActorService actorService;
+    private DirectorService directorService;
 
-    private final Actor actor = Actor.builder()
+    private final Director director = Director.builder()
             .id(1)
             .name("some-name")
             .surname("some-surname")
@@ -47,14 +47,14 @@ class ActorServiceTest {
             .build();
 
     @Test
-    @DisplayName("successfully add actor")
-    void addActor(){
+    @DisplayName("successfully add director")
+    void addDirectorTest(){
         String pictureName = "some-picture-name";
         when(createPictureUtil.creatPicture(any())).thenReturn(pictureName);
         when(multipartFile.isEmpty()).thenReturn(false);
         when(multipartFile.getSize()).thenReturn(2L);
-        when(actorRepository.save(actor)).thenReturn(actor);
-        actorService.addActor(actor, multipartFile);
+        when(directorRepository.save(director)).thenReturn(director);
+        directorService.addDirector(director, multipartFile);
     }
 
     @Test
@@ -64,75 +64,68 @@ class ActorServiceTest {
         when(multipartFile.isEmpty()).thenReturn(false);
         when(multipartFile.getSize()).thenReturn(2L);
         assertThrows(RuntimeException.class, ()-> {
-            actorService.addActor(null, multipartFile);
+            directorService.addDirector(null, multipartFile);
         });
-        verify(actorRepository, times(0)).save(any());
+        verify(directorRepository, times(0)).save(any());
     }
 
     @Test
-    @DisplayName("successfully find actor by id")
-    void getById(){
-        when(actorRepository.findById(1)).thenReturn(Optional.of(actor));
-        Actor byId = actorService.getById(1);
-        assertEquals(byId, actor);
+    @DisplayName("successfully find director by id")
+    void getByIdTest(){
+        when(directorRepository.findById(1)).thenReturn(Optional.of(director));
+        Director byId = directorService.findById(1);
+        assertEquals(byId, director);
     }
 
     @Test
-    @DisplayName("failed get actor by id")
-    void getActorByIdFailTest() {
-        when(actorRepository.findById(0)).thenReturn(Optional.ofNullable(null));
-        Actor actorById = actorService.getById(0);
-        assertNull(actorById);
+    @DisplayName("failed get director by id")
+    void getDirectorByIdFailTest() {
+        when(directorRepository.findById(0)).thenReturn(Optional.ofNullable(null));
+        Director directorById = directorService.findById(0);
+        assertNull(directorById);
     }
 
     @Test
-    @DisplayName("successfully find all actors ")
-    void findAllActorsTest(){
-        List<Actor> actors = new ArrayList<>();
-        actors.add(actor);
-        when(actorRepository.findAll()).thenReturn(actors);
-        List<Actor> allActors = actorService.findAllActors();
-        assertEquals(allActors, actors);
+    @DisplayName("successfully find all directors")
+    void findAllDirectorsTest(){
+        List<Director> directors = new ArrayList<>();
+        directors.add(director);
+        when(directorRepository.findAll()).thenReturn(directors);
+        List<Director> allDirectors = directorService.findAllDirectors();
+        assertEquals(allDirectors, directors);
     }
 
     @Test
-    @DisplayName("failed find all actors")
-    void findAllActorsFailTest(){
-        when(actorRepository.findAll()).thenReturn(null);
-        List<Actor> allActors = actorService.findAllActors();
-        assertNull(allActors);
+    @DisplayName("failed find all directors")
+    void findAllDirectorsFailTest(){
+        when(directorRepository.findAll()).thenReturn(null);
+        List<Director> allDirectors = directorService.findAllDirectors();
+        assertNull(allDirectors);
     }
 
     @Test
     @DisplayName("successfully calculate age")
-    void calculateAge() {
+    void calculateAgeTest() {
         int age = 24;
-        int actualAge = actorService.calculateAge(LocalDate.now().minusYears(24));
+        int actualAge = directorService.calculateAge(LocalDate.now().minusYears(24));
         assertEquals(age, actualAge);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

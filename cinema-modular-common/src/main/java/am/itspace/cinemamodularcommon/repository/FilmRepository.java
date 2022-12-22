@@ -18,7 +18,7 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
     List<Film> findAllByGenres(Genre genre);
 
     @Query(value = "select * from film where (YEAR(premiere)) between :minDate  and :maxDate",nativeQuery = true)
-    List<Film> findAllByPremiere_Year(int minDate, int maxDate);
+    List<Film> findAllByPremiereYear(int minDate, int maxDate);
 
     @Query(value =  "select * from film order by rating desc",nativeQuery = true)
     List<Film>findAllByRating();
@@ -37,6 +37,9 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
 
     @Query(value = "SELECT * FROM film ORDER BY rating DESC LIMIT 5", nativeQuery = true)
     List<Film> findFiveFilmsByRating();
+
+    @Query(value = "SELECT * FROM film ORDER BY premiere DESC LIMIT 5", nativeQuery = true)
+    List<Film> findFiveLastFilms();
 
     @Query(value = "SELECT * FROM film ORDER BY premiere DESC", nativeQuery = true)
     Page<Film> findFilmsSortedByPremiere(Pageable pageable);

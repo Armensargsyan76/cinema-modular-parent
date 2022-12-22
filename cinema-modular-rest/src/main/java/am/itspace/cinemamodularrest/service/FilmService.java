@@ -47,7 +47,7 @@ public class FilmService {
     }
 
     public List<Film> getFilmByPremiere(int minDate, int maxDate) {
-        return filmRepository.findAllByPremiere_Year(minDate, maxDate);
+        return filmRepository.findAllByPremiereYear(minDate, maxDate);
     }
 
     public List<Film> getByRating() {

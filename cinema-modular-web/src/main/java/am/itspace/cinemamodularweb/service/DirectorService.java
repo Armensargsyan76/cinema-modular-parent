@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -14,14 +15,14 @@ import java.util.List;
 public class DirectorService {
 
     private final DirectorRepository directorRepository;
-    private final ActorService actorService;
     private final CreatePictureUtil createPictureUtil;
 
     public void addDirector(Director director, MultipartFile multipartFile) {
         if (!multipartFile.isEmpty() && multipartFile.getSize() > 0) {
             director.setPictureUrl(createPictureUtil.creatPicture(multipartFile));
         }
-        director.setAge(actorService.calculateAge(director.getDateBorn()));
+
+        director.setAge(calculateAge(director.getDateBorn()));
         directorRepository.save(director);
     }
 
@@ -31,6 +32,10 @@ public class DirectorService {
 
     public List<Director> findAllDirectors() {
         return directorRepository.findAll();
+    }
+
+    public int calculateAge(LocalDate localDate) {
+        return LocalDate.now().getYear() - localDate.getYear();
     }
 
 }

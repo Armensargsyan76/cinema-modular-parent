@@ -5,6 +5,7 @@ import am.itspace.cinemamodularcommon.entity.userdetail.FavoriteMovies;
 import am.itspace.cinemamodularcommon.entity.userdetail.UserFilm;
 import am.itspace.cinemamodularcommon.mapper.filmresponsemapper.FilmResponseMapper;
 import am.itspace.cinemamodularweb.security.CurrentUser;
+import am.itspace.cinemamodularweb.service.CommentService;
 import am.itspace.cinemamodularweb.service.FilmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ public class WatchFilmPageController {
 
     private final FilmService filmService;
     private final FilmResponseMapper filmResponseMapper;
+    private final CommentService commentService;
 
     @GetMapping("/watch/film")
     public String singleFilmPage(@AuthenticationPrincipal CurrentUser currentUser,
@@ -33,7 +35,7 @@ public class WatchFilmPageController {
             modelMap.addAttribute("user", currentUser);
             modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
         }
-        modelMap.addAttribute("comments", filmService.getFilmComments(film_id));
+        modelMap.addAttribute("comments", commentService.getFilmComments(film_id));
         return "main/watchFilmPage";
     }
 
@@ -55,7 +57,7 @@ public class WatchFilmPageController {
         modelMap.addAttribute("film", film);
         modelMap.addAttribute("user", currentUser);
         modelMap.addAttribute("haveRating", filmService.getUserFilmByFilmIdAndUserId(film_id, currentUser.getUser().getId()));
-        modelMap.addAttribute("comments", filmService.getFilmComments(film_id));
+        modelMap.addAttribute("comments", commentService.getFilmComments(film_id));
         modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
         return "main/watchFilmPage";
     }
@@ -74,7 +76,7 @@ public class WatchFilmPageController {
         modelMap.addAttribute("user", currentUser);
         modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
         modelMap.addAttribute("haveRating", filmService.getUserFilmByFilmIdAndUserId(film_id, currentUser.getUser().getId()));
-        modelMap.addAttribute("comments", filmService.getFilmComments(film_id));
+        modelMap.addAttribute("comments", commentService.getFilmComments(film_id));
 
         return "main/watchFilmPage";
     }
@@ -94,7 +96,7 @@ public class WatchFilmPageController {
         modelMap.addAttribute("user", currentUser);
         modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
         modelMap.addAttribute("haveRating", filmService.getUserFilmByFilmIdAndUserId(film_id, currentUser.getUser().getId()));
-        modelMap.addAttribute("comments", filmService.getFilmComments(film_id));
+        modelMap.addAttribute("comments", commentService.getFilmComments(film_id));
         modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
 
         return "main/watchFilmPage";
@@ -112,7 +114,7 @@ public class WatchFilmPageController {
         filmService.saveFavoriteMovies(film_id, currentUser.getUser());
         modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
         modelMap.addAttribute("haveRating", filmService.getUserFilmByFilmIdAndUserId(film_id, currentUser.getUser().getId()));
-        modelMap.addAttribute("comments", filmService.getFilmComments(film_id));
+        modelMap.addAttribute("comments", commentService.getFilmComments(film_id));
         return "main/watchFilmPage";
     }
     @GetMapping("/delete/favorite/film")
@@ -128,7 +130,7 @@ public class WatchFilmPageController {
         filmService.deleteFavoriteFilmById(favoriteFilm.getId());
         modelMap.addAttribute("haveFavoriteFilm", filmService.getFavoriteFilm(film_id, currentUser.getUser().getId()));
         modelMap.addAttribute("haveRating", filmService.getUserFilmByFilmIdAndUserId(film_id, currentUser.getUser().getId()));
-        modelMap.addAttribute("comments", filmService.getFilmComments(film_id));
+        modelMap.addAttribute("comments", commentService.getFilmComments(film_id));
         return "main/watchFilmPage";
     }
 }

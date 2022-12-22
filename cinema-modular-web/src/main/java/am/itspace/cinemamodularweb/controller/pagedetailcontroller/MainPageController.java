@@ -20,7 +20,7 @@ public class MainPageController {
 
     @GetMapping("/")
     public String mainPage(ModelMap modelMap) {
-        modelMap.addAttribute("films", filmResponseMapper.map(filmService.getLastFilms()));
+        modelMap.addAttribute("films", filmResponseMapper.map(filmService.getLastFiveFilms()));
         modelMap.addAttribute("cinemas", cinemaResponseMapper.map(cinemaService.getAllCinemas()));
         return "main/mainHome";
     }
