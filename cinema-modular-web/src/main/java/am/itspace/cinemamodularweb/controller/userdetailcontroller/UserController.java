@@ -99,7 +99,7 @@ public class UserController {
 
     @PostMapping("/editUser/{id}")
     public String editUserPage(@PathVariable("id") int id, @ModelAttribute UserUpdateRequestDTO userUpdateRequestDTO) {
-        userService.update(id, userUpdateRequestDTO);
+        userService.updateUser(id, userUpdateRequestDTO);
         return "redirect:/";
     }
 

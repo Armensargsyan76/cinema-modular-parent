@@ -33,7 +33,7 @@ public class BoxOfficeService {
         return false;
     }
 
-    private boolean isUniqueTicket(BoxOffice boxOffice) {
+    public boolean isUniqueTicket(BoxOffice boxOffice) {
         return boxOfficeRepository.getBoxOfficeUnique(boxOffice.getDate(), boxOffice.getTimeSince(),
                 boxOffice.getCinema().getId(), boxOffice.getFilm().getId()).isEmpty();
     }

@@ -1,4 +1,4 @@
-package am.itspace.cinemamodularcommon.dto;
+package am.itspace.cinemamodularcommon.dto.userrequestdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

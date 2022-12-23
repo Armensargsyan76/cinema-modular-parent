@@ -46,6 +46,8 @@ class ActorServiceTest {
             .films(null)
             .build();
 
+    private final List<Actor> actors = new ArrayList<>();
+
     @Test
     @DisplayName("successfully add actor")
     void addActor(){
@@ -73,34 +75,29 @@ class ActorServiceTest {
     @DisplayName("successfully find actor by id")
     void getById(){
         when(actorRepository.findById(1)).thenReturn(Optional.of(actor));
-        Actor byId = actorService.getById(1);
-        assertEquals(byId, actor);
+        assertEquals(actorService.getById(1), actor);
     }
 
     @Test
     @DisplayName("failed get actor by id")
     void getActorByIdFailTest() {
-        when(actorRepository.findById(0)).thenReturn(Optional.ofNullable(null));
-        Actor actorById = actorService.getById(0);
-        assertNull(actorById);
+        when(actorRepository.findById(0)).thenReturn(Optional.empty());
+        assertNull(actorService.getById(0));
     }
 
     @Test
     @DisplayName("successfully find all actors ")
     void findAllActorsTest(){
-        List<Actor> actors = new ArrayList<>();
         actors.add(actor);
         when(actorRepository.findAll()).thenReturn(actors);
-        List<Actor> allActors = actorService.findAllActors();
-        assertEquals(allActors, actors);
+        assertEquals(actorService.findAllActors(), actors);
     }
 
     @Test
     @DisplayName("failed find all actors")
     void findAllActorsFailTest(){
         when(actorRepository.findAll()).thenReturn(null);
-        List<Actor> allActors = actorService.findAllActors();
-        assertNull(allActors);
+        assertNull(actorService.findAllActors());
     }
 
     @Test

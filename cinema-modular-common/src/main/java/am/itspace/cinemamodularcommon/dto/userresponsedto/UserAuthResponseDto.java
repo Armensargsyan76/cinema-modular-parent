@@ -1,4 +1,4 @@
-package am.itspace.cinemamodularcommon.dto;
+package am.itspace.cinemamodularcommon.dto.userresponsedto;
 
 import am.itspace.cinemamodularcommon.dto.userrequestdto.UserRequestDTO;
 import am.itspace.cinemamodularcommon.dto.userresponsedto.UserResponseDTO;
