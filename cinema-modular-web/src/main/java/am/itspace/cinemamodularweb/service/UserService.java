@@ -66,15 +66,15 @@ public class UserService {
         return byEmail.isPresent();
     }
 
-    public void update(int id, UserUpdateRequestDTO userUpdateRequestDTO) {
-        User map = userMapper.map(userUpdateRequestDTO);
+    public void updateUser(int id, UserUpdateRequestDTO userUpdateRequestDTO) {
+        User user = userMapper.map(userUpdateRequestDTO);
         if (userUpdateRequestDTO.getPassword() != null) {
-            map.setPassword(passwordEncoder.encode(userUpdateRequestDTO.getPassword()));
+            user.setPassword(passwordEncoder.encode(userUpdateRequestDTO.getPassword()));
         }
-        map.setRole(Role.USER);
-        map.setEnable(true);
-        map.setId(id);
-        userMapper.map(userRepository.save(map));
+        user.setRole(Role.USER);
+        user.setEnable(true);
+        user.setId(id);
+        userMapper.map(userRepository.save(user));
     }
 
     public Page<User> getAllUsers(Pageable pageable) {

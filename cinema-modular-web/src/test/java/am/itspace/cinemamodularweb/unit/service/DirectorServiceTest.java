@@ -46,6 +46,8 @@ class DirectorServiceTest {
             .films(null)
             .build();
 
+    public List<Director> directors = new ArrayList<>();
+
     @Test
     @DisplayName("successfully add director")
     void addDirectorTest(){
@@ -55,6 +57,7 @@ class DirectorServiceTest {
         when(multipartFile.getSize()).thenReturn(2L);
         when(directorRepository.save(director)).thenReturn(director);
         directorService.addDirector(director, multipartFile);
+        verify(directorRepository, times(1)).save(any());
     }
 
     @Test
@@ -73,34 +76,29 @@ class DirectorServiceTest {
     @DisplayName("successfully find director by id")
     void getByIdTest(){
         when(directorRepository.findById(1)).thenReturn(Optional.of(director));
-        Director byId = directorService.findById(1);
-        assertEquals(byId, director);
+        assertEquals(directorService.findById(1), director);
     }
 
     @Test
     @DisplayName("failed get director by id")
     void getDirectorByIdFailTest() {
-        when(directorRepository.findById(0)).thenReturn(Optional.ofNullable(null));
-        Director directorById = directorService.findById(0);
-        assertNull(directorById);
+        when(directorRepository.findById(0)).thenReturn(Optional.empty());
+        assertNull(directorService.findById(0));
     }
 
     @Test
     @DisplayName("successfully find all directors")
     void findAllDirectorsTest(){
-        List<Director> directors = new ArrayList<>();
         directors.add(director);
         when(directorRepository.findAll()).thenReturn(directors);
-        List<Director> allDirectors = directorService.findAllDirectors();
-        assertEquals(allDirectors, directors);
+        assertEquals(directorService.findAllDirectors(), directors);
     }
 
     @Test
     @DisplayName("failed find all directors")
     void findAllDirectorsFailTest(){
         when(directorRepository.findAll()).thenReturn(null);
-        List<Director> allDirectors = directorService.findAllDirectors();
-        assertNull(allDirectors);
+        assertNull(directorService.findAllDirectors());
     }
 
     @Test
@@ -110,22 +108,5 @@ class DirectorServiceTest {
         int actualAge = directorService.calculateAge(LocalDate.now().minusYears(24));
         assertEquals(age, actualAge);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -51,7 +51,6 @@ public class FilmService {
         if (!multipartFile.isEmpty() && multipartFile.getSize() > 0) {
             film.setPictureUrl(createPictureUtil.creatPicture(multipartFile));
         }
-        film.getDirector().getFilms().add(film);
         filmRepository.save(film);
         log.info("film added {}", film.getOriginalTitle());
     }
@@ -80,10 +79,7 @@ public class FilmService {
 
     public UserFilm getUserFilmByFilmIdAndUserId(int film_id, int user_id) {
         Optional<UserFilm> userFilmOptional = userFilmRepository.findAllByFilm_idAndUser_id(film_id, user_id);
-        if (userFilmOptional.isEmpty()) {
-            return null;
-        }
-        return userFilmOptional.get();
+        return userFilmOptional.orElse(null);
     }
 
     public void dropRating(int id) {

@@ -1,7 +1,7 @@
 package am.itspace.cinemamodularrest.endpoint;
 
-import am.itspace.cinemamodularcommon.dto.UserAuthDto;
-import am.itspace.cinemamodularcommon.dto.UserAuthResponseDto;
+import am.itspace.cinemamodularcommon.dto.userrequestdto.UserAuthDto;
+import am.itspace.cinemamodularcommon.dto.userresponsedto.UserAuthResponseDto;
 import am.itspace.cinemamodularcommon.dto.userrequestdto.UserRequestDTO;
 import am.itspace.cinemamodularcommon.dto.userrequestdto.UserUpdateRequestDTO;
 import am.itspace.cinemamodularcommon.dto.userresponsedto.UserResponseDTO;
